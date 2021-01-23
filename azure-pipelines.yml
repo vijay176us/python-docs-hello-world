@@ -18,6 +18,12 @@ strategy:
     #   python.version: '3.6'
     Python37:
       python.version: '3.7'
+      
+steps:
+- task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+      displayName: 'Use Python $(python.version)'
 
 stages:
 - stage: Build
@@ -25,12 +31,6 @@ stages:
   - job: BuildJob
     steps:
     - script: echo Building!
-    
-    - task: UsePythonVersion@0
-      inputs:
-        versionSpec: '$(python.version)'
-      displayName: 'Use Python $(python.version)'
-
     - script: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
