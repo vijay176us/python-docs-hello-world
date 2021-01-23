@@ -22,6 +22,7 @@ strategy:
 
 stages:
   - stage: Build
+    displayName: build1
     jobs:
     - job: BuildJob
       pool:
