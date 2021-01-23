@@ -20,7 +20,7 @@ strategy:
        python.version: '3.7'
 
 
-
+stages:
 - stage: Build
   jobs:
   - job: BuildJob
