@@ -10,27 +10,45 @@ pool:
   vmImage: 'ubuntu-latest'
 strategy:
   matrix:
-    Python27:
-      python.version: '2.7'
-    Python35:
-      python.version: '3.5'
-    Python36:
-      python.version: '3.6'
+    # Python27:
+    #   python.version: '2.7'
+    # Python35:
+    #   python.version: '3.5'
+    # Python36:
+    #   python.version: '3.6'
     Python37:
       python.version: '3.7'
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '$(python.version)'
-  displayName: 'Use Python $(python.version)'
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: echo Building!
+    
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '$(python.version)'
+      displayName: 'Use Python $(python.version)'
 
-- script: |
-    python -m pip install --upgrade pip
-    pip install -r requirements.txt
-  displayName: 'Install dependencies'
+    - script: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      displayName: 'Install dependencies'
+    - script: |
+        flask run
+        displayName: 'Starting an App'
 
-- script: |
-    pip install pytest pytest-azurepipelines
-    pytest
-  displayName: 'pytest'
+- stage: Test
+  jobs:
+  - job: TestOnWindows
+    steps:
+    - script: echo Testing on Windows!
+  - job: TestOnLinux
+    steps:
+    - script: echo Testing on Linux!
+# - stage: Deploy
+#   jobs:
+#   - job: Deploy
+#     steps:
+#     - script: echo Deploying the code!
