@@ -8,15 +8,15 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-strategy:
-  matrix:
-    # Python27:
-    #   python.version: '2.7'
-    # Python35:
-    #   python.version: '3.5'
-    # Python36:
-    #   python.version: '3.6'
-    Python37:
+# strategy:
+#   matrix:
+#     # Python27:
+#     #   python.version: '2.7'
+#     # Python35:
+#     #   python.version: '3.5'
+#     # Python36:
+#     #   python.version: '3.6'
+#     Python37:
       python.version: '3.7'
 
 
@@ -30,11 +30,11 @@ stages:
         versionSpec: '$(python.version)'
         displayName: 'Use Python $(python.version)'
     - script: echo Building!
-    - bash: |
+    - script: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
       displayName: 'Install dependencies'
-    - bash: |
+    - script: |
         flask run
         displayName: 'Starting an App'
 
