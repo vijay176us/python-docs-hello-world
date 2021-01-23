@@ -42,7 +42,7 @@ jobs:
       displayName: 'Starting an App'
 
   # - stage: Test
-jobs:
+
 - job: TestOnWindows
   steps:
   - script: echo Testing on Windows!
