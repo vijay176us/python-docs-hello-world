@@ -42,7 +42,7 @@ stages:
         displayName: 'Install dependencies'
       - script: |
           # flask run
-          echo Hello World!! > test.txt
+          # echo Hello World!! > test.txt
           displayName: Starting an App
       - publish: $(Build.SourcesDirectory)/build
         artifact: WebApp
