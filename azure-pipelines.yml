@@ -41,8 +41,12 @@ stages:
           pip install -r requirements.txt
         displayName: 'Install dependencies'
       - script: |
-          flask run
+          # flask run
+          echo Hello World!! > test.txt
           displayName: Starting an App
+      - publish: $(Build.SourcesDirectory)/build
+        artifact: WebApp
+        displayName: Publish artifact WebApp
 
   - stage: Test
     jobs:
