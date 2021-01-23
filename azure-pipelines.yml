@@ -24,6 +24,8 @@ stages:
 - stage: Build
   jobs:
   - job: BuildJob
+    pool:
+      vmImage: ubuntu-16.04
     steps:
     - task: UsePythonVersion@0
       inputs:
