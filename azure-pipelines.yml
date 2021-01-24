@@ -25,7 +25,67 @@ variables:
   # Python version: 3.7
   pythonVersion: '3.7'
 
+
+- task: TerraformInstaller@0
+  inputs:
+
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Pay-As-You-Go (9da99e9b-c378-4ac5-8d32-8410a83df14c)'
+    backendAzureRmResourceGroupName: 'vk-testing'
+    backendAzureRmStorageAccountName: 'storageaccountvk1'
+    backendAzureRmContainerName: 'container1'
+    backendAzureRmKey: 'BdWKLPJ/p1AVR2Xsmt1hYs4BcF3vrlI+7kl6pBTcVAODYj27FKEeWjcDGzDrkkXRp9ldToKYB351Fh1Eao7+2g=='
+    terraformVersion: '0.12.3'
+
+  
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    commandOptions: '-out=tfplan'
+- task: TerraformTaskV1@0
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    commandOptions: 'tfplan -auto-approve'
+    environmentServiceNameAzureRM: 'Pay-As-You-Go (9da99e9b-c378-4ac5-8d32-8410a83df14c)'
+
 stages:
+- stage: webAppDeploy
+  displayName: WebApp Deploy
+  jobs:
+  - job: InfraDeployJob
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: TerraformInstaller@0
+      inputs:
+        terraformVersion: '0.12.3'
+    - task: TerraformTaskV1@0
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        backendServiceArm: 'Pay-As-You-Go (9da99e9b-c378-4ac5-8d32-8410a83df14c)'
+        backendAzureRmResourceGroupName: 'vk-testing'
+        backendAzureRmStorageAccountName: 'storageaccountvk1'
+        backendAzureRmContainerName: 'container1'
+        backendAzureRmKey: 'BdWKLPJ/p1AVR2Xsmt1hYs4BcF3vrlI+7kl6pBTcVAODYj27FKEeWjcDGzDrkkXRp9ldToKYB351Fh1Eao7+2g=='
+    - task: TerraformTaskV1@0
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        commandOptions: '-out=tfplan'
+    - task: TerraformTaskV1@0
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        commandOptions: 'tfplan -auto-approve'
+        environmentServiceNameAzureRM: 'Pay-As-You-Go (9da99e9b-c378-4ac5-8d32-8410a83df14c)'
+
+
 - stage: Build
   displayName: Build stage
   jobs:
